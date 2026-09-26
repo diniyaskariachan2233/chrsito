@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Christo Eldhose — Scrum Master & Agile Leader</title>
+  <!-- Three.js for Interactive 3D WebGL Model -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
       --bg-cream: #f5f2eb;
@@ -30,7 +32,7 @@
       overflow-x: hidden;
     }
 
-    /* Dynamic Ambient Cursor Spotlight */
+    /* Ambient Cursor Spotlight */
     .spotlight {
       position: fixed;
       top: 0;
@@ -38,11 +40,11 @@
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      background: radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(204, 255, 0, 0.18), transparent 80%);
+      background: radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(204, 255, 0, 0.2), transparent 80%);
       z-index: 1;
     }
 
-    /* Top Navigation */
+    /* Navigation */
     nav {
       position: sticky;
       top: 0;
@@ -57,7 +59,7 @@
     }
 
     .brand {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       text-transform: uppercase;
@@ -93,13 +95,18 @@
       color: var(--text-main);
     }
 
-    /* Hero Section */
+    /* Hero Layout with 3D Object */
     .hero {
       position: relative;
       z-index: 2;
-      padding: 6rem 3rem 4rem;
+      padding: 4rem 3rem 2rem;
       max-width: 1300px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: center;
+      min-height: 80vh;
     }
 
     .tagline {
@@ -115,26 +122,18 @@
     }
 
     h1 {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      line-height: 1.05;
+      font-family: Georgia, serif;
+      font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+      line-height: 1.08;
       font-weight: 400;
       letter-spacing: -0.03em;
       margin-bottom: 2rem;
-      max-width: 1000px;
-    }
-
-    .hero-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 2rem;
     }
 
     .hero-bio {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--text-muted);
+      margin-bottom: 2rem;
       max-width: 600px;
     }
 
@@ -142,7 +141,7 @@
       background: var(--accent-dark);
       color: #fff;
       text-decoration: none;
-      padding: 1.2rem 2.5rem;
+      padding: 1.1rem 2.2rem;
       border-radius: 50px;
       font-size: 1rem;
       font-weight: 600;
@@ -158,11 +157,31 @@
       transform: translateY(-2px);
     }
 
-    /* Metrics Section */
+    /* 3D WebGL Canvas Container */
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #webgl-canvas {
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    #webgl-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Metrics Grid */
     .metrics-section {
       position: relative;
       z-index: 2;
-      padding: 4rem 3rem;
+      padding: 3rem 3rem;
       max-width: 1300px;
       margin: 0 auto;
     }
@@ -190,7 +209,6 @@
       font-family: Georgia, serif;
       font-size: 3.5rem;
       font-weight: 400;
-      color: var(--text-main);
       line-height: 1;
       margin-bottom: 0.5rem;
     }
@@ -218,7 +236,7 @@
 
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2rem;
     }
 
@@ -310,18 +328,6 @@
       font-weight: bold;
     }
 
-    .modal-card h2 {
-      font-family: Georgia, serif;
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-
-    .modal-card p {
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
-
     /* Footer */
     footer {
       position: relative;
@@ -337,16 +343,9 @@
       gap: 2rem;
     }
 
-    .footer-left h2 {
-      font-family: Georgia, serif;
-      font-size: 2rem;
-    }
-
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .hero { padding: 4rem 1.5rem 2rem; }
-      .metrics-section, .projects-section, footer { padding: 2rem 1.5rem; }
-      .projects-grid { grid-template-columns: 1fr; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .canvas-container { height: 350px; }
     }
   </style>
 </head>
@@ -364,13 +363,18 @@
   </nav>
 
   <section class="hero">
-    <div class="tagline">Scrum Master • Agile Execution • Client Success</div>
-    <h1>Creating seamless team velocity and predictable project outcomes.</h1>
-    <div class="hero-bottom">
+    <div>
+      <div class="tagline">Scrum Master • Agile Execution • Operations Leader</div>
+      <h1>Creating seamless team velocity and predictable outcomes.</h1>
       <p class="hero-bio">
-        Kochi & Bengaluru based Scrum Master with hands-on experience guiding cross-functional engineering and operations teams through Agile ceremonies, blocker mitigation, and enterprise ERP adoption.
+        Kochi & Bengaluru based Scrum Master with experience guiding cross-functional software and operations teams through Agile ceremonies, blocker resolution, and enterprise ERP implementations.
       </p>
       <a href="mailto:christo.eldhose@example.com" class="cta-btn">Connect With Me ↗</a>
+    </div>
+
+    <!-- 3D Interactive WebGL Geometric Model -->
+    <div class="canvas-container">
+      <canvas id="webgl-canvas"></canvas>
     </div>
   </section>
 
@@ -378,7 +382,7 @@
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-num">35%</div>
-        <div class="metric-label">Sprint Velocity Increase Across Agile Teams</div>
+        <div class="metric-label">Sprint Velocity Increase Across Agile Engineering Teams</div>
       </div>
       <div class="metric-card">
         <div class="metric-num">92%</div>
@@ -386,7 +390,7 @@
       </div>
       <div class="metric-card">
         <div class="metric-num">10+</div>
-        <div class="metric-label">Enterprise Client ERP Implementations Managed</div>
+        <div class="metric-label">Enterprise ERP Client Implementations Managed</div>
       </div>
     </div>
   </section>
@@ -404,7 +408,7 @@
       <div class="project-card" onclick="openModal('jira')">
         <div class="project-tag">Tooling & Governance</div>
         <h3>Jira & Confluence Architecture Modernization</h3>
-        <p>Restructured backlog management workflows, automated sprint reporting, and reduced defect triage turnaround by 30%.</p>
+        <p>Restructured backlog workflows, automated sprint reporting, and reduced defect triage turnaround by 30%.</p>
         <span class="project-link">View Workflow Architecture ↗</span>
       </div>
 
@@ -417,7 +421,6 @@
     </div>
   </section>
 
-  <!-- Modal Popups -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">×</button>
@@ -426,8 +429,8 @@
   </div>
 
   <footer>
-    <div class="footer-left">
-      <h2>Let's build high-performing teams together.</h2>
+    <div>
+      <h2 style="font-family: Georgia, serif;">Let's build high-performing teams together.</h2>
     </div>
     <div>
       <p style="color: var(--text-muted);">© 2026 Christo Eldhose • Kochi, Kerala, India</p>
@@ -435,7 +438,105 @@
   </footer>
 
   <script>
-    // Web Audio Synthesizer Engine
+    // -------------------------------------------------------------
+    // THREE.JS 3D INTERACTIVE HERO OBJECT (GLASS/METALLIC KNOT)
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('webgl-canvas');
+    const container = canvas.parentElement;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 6;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Torus Knot Geometry
+    const geometry = new THREE.TorusKnotGeometry(1.2, 0.38, 128, 32);
+    
+    // Wireframe Outer Mesh
+    const wireframeGeometry = new THREE.WireframeGeometry(geometry);
+    const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x111111, opacity: 0.15, transparent: true });
+    const wireframeMesh = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+
+    // Shiny Metallic Metallic Inner Mesh
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xccff00,
+      emissive: 0x111111,
+      specular: 0xffffff,
+      shininess: 100,
+      flatShading: false
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.add(wireframeMesh);
+    scene.add(mesh);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xccff00, 1.5);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(-5, 5, 2);
+    scene.add(dirLight);
+
+    // Mouse Drag Physics
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+    let mouseVelocity = { x: 0.005, y: 0.005 };
+
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      playSynthSound('hover');
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+
+      if (isDragging) {
+        mesh.rotation.y += deltaX * 0.01;
+        mesh.rotation.x += deltaY * 0.01;
+        mouseVelocity = { x: deltaY * 0.001, y: deltaX * 0.001 };
+      }
+
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    });
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (!isDragging) {
+        mesh.rotation.x += mouseVelocity.x + 0.003;
+        mesh.rotation.y += mouseVelocity.y + 0.005;
+        // Smooth deceleration
+        mouseVelocity.x *= 0.98;
+        mouseVelocity.y *= 0.98;
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // -------------------------------------------------------------
+    // WEB AUDIO SYNTHESIZER
+    // -------------------------------------------------------------
     let soundEnabled = true;
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -489,30 +590,27 @@
     // Modal Details
     const modalData = {
       retro: `
-        <h2>Agile Retrospective Playbook</h2>
-        <p><strong>Overview:</strong> Transformed standard retrospective meetings into interactive continuous-improvement workshops.</p>
-        <p><strong>Key Highlights:</strong></p>
-        <ul style="margin-left:1.5rem; margin-bottom:1.5rem; color:#555;">
+        <h2 style="font-family: Georgia, serif; font-size: 2rem; margin-bottom: 1rem;">Agile Retrospective Playbook</h2>
+        <p style="color:#555; margin-bottom: 1rem;"><strong>Overview:</strong> Transformed standard retrospective meetings into interactive continuous-improvement workshops.</p>
+        <ul style="margin-left:1.5rem; color:#555; line-height: 1.8;">
           <li>Introduced dynamic themes (Sailboat, Starfish, 4Ls) based on team sentiment.</li>
           <li>Established actionable retro items with designated owners in Jira.</li>
           <li>Increased action completion rate from 40% to 90% over 4 sprints.</li>
         </ul>
       `,
       jira: `
-        <h2>Jira & Confluence Architecture</h2>
-        <p><strong>Overview:</strong> Re-architected Jira issue types, custom workflows, and release dashboards for cross-functional transparency.</p>
-        <p><strong>Key Highlights:</strong></p>
-        <ul style="margin-left:1.5rem; margin-bottom:1.5rem; color:#555;">
+        <h2 style="font-family: Georgia, serif; font-size: 2rem; margin-bottom: 1rem;">Jira & Confluence Architecture</h2>
+        <p style="color:#555; margin-bottom: 1rem;"><strong>Overview:</strong> Re-architected Jira issue types, custom workflows, and release dashboards for cross-functional transparency.</p>
+        <ul style="margin-left:1.5rem; color:#555; line-height: 1.8;">
           <li>Configured automated sprint health reporting and blocker escalation paths.</li>
           <li>Built central Confluence knowledge hubs for onboarding new team members.</li>
           <li>Reduced triage turnaround time by 30%.</li>
         </ul>
       `,
       erp: `
-        <h2>ERP Client Adoption Framework</h2>
-        <p><strong>Overview:</strong> Owned end-to-end client success, requirement gathering, and operations support for Nissi Computing Labs.</p>
-        <p><strong>Key Highlights:</strong></p>
-        <ul style="margin-left:1.5rem; margin-bottom:1.5rem; color:#555;">
+        <h2 style="font-family: Georgia, serif; font-size: 2rem; margin-bottom: 1rem;">ERP Client Adoption Framework</h2>
+        <p style="color:#555; margin-bottom: 1rem;"><strong>Overview:</strong> Owned end-to-end client success, requirement gathering, and operations support for Nissi Computing Labs.</p>
+        <ul style="margin-left:1.5rem; color:#555; line-height: 1.8;">
           <li>Led on-site training workshops across enterprise client teams.</li>
           <li>Diagnosed root-cause workflow errors and resolved system blockers in real time.</li>
           <li>Sustained high client retention and adoption rates.</li>
