@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Christo Eldhose — Scrum Master & Agile Leader</title>
   <style>
-    /* Elegant Light Editorial Palette (Oat, Cream, Dark Charcoal, Warm Ochre Accent) */
+    /* Squarespace Light Editorial Palette (Soft Linen, Cream White, Slate Charcoal, Warm Terracotta) */
     :root {
       --bg-light: #f8f6f0;           /* Soft Oat Linen Background */
-      --card-bg: #ffffff;            /* Warm Pure White */
+      --card-bg: #ffffff;            /* Pure Warm White */
       --text-dark: #1e2022;          /* Slate Charcoal Title Text */
       --text-muted: #5e646a;         /* Muted Professional Grey */
       --accent-warm: #b85d3b;        /* Subtle Terracotta Ochre */
-      --accent-hover: #9c4c2d;
       --border-subtle: #e2ddd5;      /* Subtle Linen Border */
-      --shadow-light: rgba(30, 32, 34, 0.04);
-      --shadow-hover: rgba(30, 32, 34, 0.1);
+      --shadow-light: rgba(30, 32, 34, 0.05);
+      --shadow-hover: rgba(30, 32, 34, 0.12);
       --font-serif: "Georgia", "Times New Roman", serif;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -31,7 +30,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Sticky Editorial Header */
+    /* Sticky Editorial Navigation Bar */
     nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
@@ -49,16 +48,16 @@
     }
     .contact-btn:hover { background: var(--accent-warm); }
 
-    /* Cursor Follow Floating Preview Card */
+    /* Spatial Cursor-Following Floating Card */
     .floating-cursor-card {
-      position: fixed; pointer-events: none; z-index: 999; width: 320px; background: var(--card-bg);
-      border: 1px solid var(--border-subtle); border-top: 3px solid var(--accent-warm);
-      border-radius: 12px; padding: 1.25rem; opacity: 0;
+      position: fixed; pointer-events: none; z-index: 999; width: 300px; background: var(--card-bg);
+      border: 1px solid var(--border-subtle); border-radius: 12px; padding: 0.8rem; opacity: 0;
       transform: translate(-50%, -120%) scale(0.95); transition: opacity 0.2s ease, transform 0.2s ease;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
     }
     .floating-cursor-card.active { opacity: 1; transform: translate(-50%, -120%) scale(1); }
-    .card-tag { font-size: 0.75rem; color: var(--accent-warm); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .card-preview-img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 0.6rem; }
+    .card-tag { font-size: 0.72rem; color: var(--accent-warm); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
 
     /* Hero Section */
     .hero {
@@ -77,13 +76,18 @@
     /* Interactive Hover Preview Zone */
     .hover-preview-zone {
       background: var(--card-bg); border: 1px solid var(--border-subtle);
-      border-radius: 20px; padding: 3.5rem 2.8rem; min-height: 380px; display: flex; flex-direction: column; justify-content: center;
-      position: relative; box-shadow: 0 6px 25px var(--shadow-light); transition: border-color 0.3s ease;
+      border-radius: 20px; overflow: hidden; position: relative;
+      box-shadow: 0 6px 25px var(--shadow-light); transition: border-color 0.3s ease;
+      cursor: pointer;
     }
     .hover-preview-zone:hover { border-color: var(--accent-warm); }
-    .hover-preview-zone h3 { font-family: var(--font-serif); font-size: 2.1rem; margin-bottom: 1rem; font-weight: 400; color: var(--text-dark); }
+    .hover-img-wrapper { width: 100%; height: 260px; overflow: hidden; }
+    .hover-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .hover-preview-zone:hover .hover-img-wrapper img { transform: scale(1.04); }
+    .hover-content { padding: 2rem; }
+    .hover-content h3 { font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 400; color: var(--text-dark); }
 
-    /* Abstract Architectural Dynamic Image & Metric Swap Section */
+    /* Abstract Architectural Spatial & Dynamic Metric Swap Engine */
     .arch-section { max-width: 1300px; margin: 0 auto; padding: 6rem 4rem; }
     .section-header { margin-bottom: 3.5rem; }
     .section-header h2 { font-family: var(--font-serif); font-size: 2.8rem; font-weight: 400; color: var(--text-dark); margin-bottom: 0.6rem; }
@@ -101,20 +105,18 @@
     .step-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
 
     .arch-canvas-display {
-      background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 3rem;
-      min-height: 440px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+      background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 2rem;
+      min-height: 480px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
       box-shadow: 0 8px 30px var(--shadow-light);
     }
-    .display-diagram {
-      width: 100%; height: 220px; border-radius: 12px; background-size: cover; background-position: center;
-      transition: background-image 0.4s ease, transform 0.4s ease; border: 1px solid var(--border-subtle);
-    }
+    .display-diagram-wrapper { width: 100%; height: 260px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .display-diagram-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease, transform 0.4s ease; }
     .display-metrics { display: flex; gap: 2.5rem; margin-top: 1.8rem; border-top: 1px solid var(--border-subtle); padding-top: 1.5rem; }
     .metric-item { flex: 1; }
     .metric-val { font-family: var(--font-serif); font-size: 2.4rem; color: var(--text-dark); font-weight: 400; }
     .metric-lbl { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
 
-    /* Infinite Marquee Portfolio Ticker */
+    /* Infinite Marquee Ticker */
     .marquee-section { padding: 3.5rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); overflow: hidden; white-space: nowrap; background: #faf8f3; }
     .marquee-track { display: inline-flex; gap: 2.5rem; animation: marquee 28s linear infinite; }
     .marquee-item {
@@ -123,15 +125,17 @@
     }
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    /* Showcase Portfolio Grid */
+    /* Portfolio Showcase Grid */
     .showcase-section { max-width: 1300px; margin: 0 auto; padding: 6rem 4rem; }
     .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2.5rem; }
     .portfolio-card {
-      background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 18px; padding: 2.8rem;
+      background: var(--card-bg); border: 1px solid var(--border-subtle); border-radius: 18px; overflow: hidden;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; position: relative; box-shadow: 0 4px 20px var(--shadow-light);
     }
     .portfolio-card:hover { border-color: var(--accent-warm); transform: translateY(-5px); box-shadow: 0 12px 35px var(--shadow-hover); }
-    .portfolio-card h3 { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; color: var(--text-dark); margin: 1.2rem 0 0.6rem; }
+    .portfolio-card-img { width: 100%; height: 220px; object-fit: cover; }
+    .portfolio-card-body { padding: 2.2rem; }
+    .portfolio-card h3 { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; color: var(--text-dark); margin: 0.8rem 0 0.6rem; }
     .portfolio-card p { color: var(--text-muted); font-size: 0.98rem; line-height: 1.6; margin-bottom: 1.8rem; }
     .portfolio-link { color: var(--accent-warm); font-weight: 600; text-decoration: none; font-size: 0.9rem; letter-spacing: 0.02em; }
     .portfolio-link:hover { text-decoration: underline; }
@@ -151,11 +155,12 @@
 </head>
 <body>
 
-  <!-- Floating Cursor-Following Preview Object -->
+  <!-- Floating Cursor-Following Spatial Preview Object -->
   <div class="floating-cursor-card" id="cursorCard">
-    <div class="card-tag" id="cursorTag">Agile Metric</div>
-    <div id="cursorTitle" style="font-weight:700; font-size:1.15rem; margin:0.4rem 0; color: var(--text-dark);">Preview Title</div>
-    <div id="cursorDesc" style="font-size:0.88rem; color: var(--text-muted);">Interactive description preview.</div>
+    <img id="cursorImg" class="card-preview-img" src="1.jpg" alt="Preview Image">
+    <div class="card-tag" id="cursorTag">Agile Artifact</div>
+    <div id="cursorTitle" style="font-weight:700; font-size:1.05rem; margin:0.2rem 0; color: var(--text-dark);">Preview Title</div>
+    <div id="cursorDesc" style="font-size:0.82rem; color: var(--text-muted);">Interactive description preview.</div>
   </div>
 
   <nav>
@@ -175,18 +180,24 @@
       <p>Kochi & Bengaluru based Scrum Master with hands-on experience guiding cross-functional engineering teams, optimizing Jira workflows, and facilitating enterprise ERP implementations.</p>
     </div>
 
-    <!-- Mouse Hover Interactive Preview Box -->
+    <!-- Mouse Hover Spatial Preview Box -->
     <div class="hover-preview-zone" id="hoverZone"
+         data-img="1.jpg"
          data-tag="Agile Execution" 
-         data-title="Sprint Velocity & Flow" 
-         data-desc="Hover across this block to see real-time cursor-tracking Agile artifact previews.">
-      <div class="badge" style="width: fit-content;">Interactive Cursor Zone</div>
-      <h3>Hover your cursor over this block</h3>
-      <p>Move your mouse inside to test the live floating preview object that follows your exact mouse movement across the layout.</p>
+         data-title="Sprint Velocity & Workspace Flow" 
+         data-desc="Real-time sprint tracking and back-office sprint planning sessions.">
+      <div class="hover-img-wrapper">
+        <img src="1.jpg" alt="Agile Workspace Desk">
+      </div>
+      <div class="hover-content">
+        <div class="badge" style="width: fit-content; margin-bottom: 0.8rem;">Interactive Cursor Zone</div>
+        <h3>Hover over this card</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Move your mouse across this area to trigger the floating image preview card.</p>
+      </div>
     </div>
   </section>
 
-  <!-- Abstract Architectural Design (Dynamic Image & Metric Swap) -->
+  <!-- Abstract Architectural Spatial & Dynamic Metric Swap Section -->
   <section class="arch-section" id="architecture">
     <div class="section-header">
       <h2>Agile Architecture & Workflow Systems</h2>
@@ -215,8 +226,10 @@
       </div>
 
       <div class="arch-canvas-display">
-        <div class="display-diagram" id="archDiagram" style="background-image: linear-gradient(135deg, #e8dfd1, #b85d3b);"></div>
-        <div id="archTitle" style="font-family: var(--font-serif); font-size: 1.7rem; color: var(--text-dark); margin-top: 1.5rem;">Agile Retrospective Framework</div>
+        <div class="display-diagram-wrapper">
+          <img id="archImg" src="1.jpg" alt="Architecture Diagram">
+        </div>
+        <div id="archTitle" style="font-family: var(--font-serif); font-size: 1.7rem; color: var(--text-dark); margin-top: 1.2rem;">Agile Retrospective Framework</div>
         <div class="display-metrics">
           <div class="metric-item">
             <div class="metric-val" id="metric1">90%</div>
@@ -241,7 +254,7 @@
       <div class="marquee-item">📈 Burndown Analytics</div>
       <div class="marquee-item">💻 Enterprise ERP</div>
       <div class="marquee-item">🚀 Agile Flow Optimization</div>
-      <!-- Duplicated for Seamless Infinite Loop -->
+      <!-- Duplicated for Infinite Loop -->
       <div class="marquee-item">⚡ Jira Software</div>
       <div class="marquee-item">📘 Confluence Hubs</div>
       <div class="marquee-item">🔄 Scrum Ceremonies</div>
@@ -261,24 +274,33 @@
 
     <div class="portfolio-grid">
       <div class="portfolio-card">
-        <div class="badge">Nissi Computing Labs</div>
-        <h3>Project Coordinator & ERP Lead</h3>
-        <p>Managed client software deployments, coordinated cross-functional issue resolution, and streamlined end-user training.</p>
-        <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+        <img class="portfolio-card-img" src="3 - Copy.jpg" alt="Boardroom Session">
+        <div class="portfolio-card-body">
+          <div class="badge">Nissi Computing Labs</div>
+          <h3>Project Coordinator & ERP Lead</h3>
+          <p>Managed client software deployments, coordinated cross-functional issue resolution, and led strategic executive briefings.</p>
+          <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+        </div>
       </div>
 
       <div class="portfolio-card">
-        <div class="badge">STAR Innovators</div>
-        <h3>Agile Facilitator & Scrum Master</h3>
-        <p>Led daily standups, backlog grooming, sprint planning, and retrospective sessions for software development teams.</p>
-        <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+        <img class="portfolio-card-img" src="2.jpg" alt="Agile Team Meeting">
+        <div class="portfolio-card-body">
+          <div class="badge">STAR Innovators</div>
+          <h3>Agile Facilitator & Scrum Master</h3>
+          <p>Led daily standups, backlog grooming, sprint planning, and retrospective sessions for cross-functional software teams.</p>
+          <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+        </div>
       </div>
 
       <div class="portfolio-card">
-        <div class="badge">IEDC MBITS</div>
-        <h3>Innovation & Project Lead</h3>
-        <p>Coordinated tech innovation initiatives, student developer workshops, and project milestones.</p>
-        <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+        <img class="portfolio-card-img" src="1.jpg" alt="Developer Workspace">
+        <div class="portfolio-card-body">
+          <div class="badge">IEDC MBITS</div>
+          <h3>Innovation & Project Lead</h3>
+          <p>Coordinated tech innovation initiatives, student developer workshops, sprint retrospectives, and project milestones.</p>
+          <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+        </div>
       </div>
     </div>
   </section>
@@ -294,8 +316,9 @@
   </footer>
 
   <script>
-    // Cursor Follow Preview Object
+    // Spatial Cursor Follow Preview Object
     const cursorCard = document.getElementById('cursorCard');
+    const cursorImg = document.getElementById('cursorImg');
     const cursorTag = document.getElementById('cursorTag');
     const cursorTitle = document.getElementById('cursorTitle');
     const cursorDesc = document.getElementById('cursorDesc');
@@ -307,6 +330,7 @@
     });
 
     hoverZone.addEventListener('mouseenter', () => {
+      cursorImg.src = hoverZone.getAttribute('data-img');
       cursorTag.innerText = hoverZone.getAttribute('data-tag');
       cursorTitle.innerText = hoverZone.getAttribute('data-title');
       cursorDesc.innerText = hoverZone.getAttribute('data-desc');
@@ -321,19 +345,19 @@
     const archData = [
       {
         title: "Agile Retrospective Framework",
-        bg: "linear-gradient(135deg, #e8dfd1, #b85d3b)",
+        img: "1.jpg",
         m1: "90%", l1: "Action Completion Rate",
         m2: "+35%", l2: "Sprint Velocity Growth"
       },
       {
         title: "Jira & Confluence Architecture",
-        bg: "linear-gradient(135deg, #dfd8cb, #8c4125)",
+        img: "2.jpg",
         m1: "-30%", l1: "Defect Triage Turnaround",
         m2: "100%", l2: "Backlog Transparency"
       },
       {
         title: "Enterprise ERP Client Adoption",
-        bg: "linear-gradient(135deg, #d2c8b8, #5e646a)",
+        img: "3 - Copy.jpg",
         m1: "10+", l1: "Enterprise Clients Onboarded",
         m2: "98%", l2: "Client Satisfaction Score"
       }
@@ -347,7 +371,14 @@
       });
 
       const data = archData[index];
-      document.getElementById('archDiagram').style.backgroundImage = data.bg;
+      const archImg = document.getElementById('archImg');
+      
+      archImg.style.opacity = '0';
+      setTimeout(() => {
+        archImg.src = data.img;
+        archImg.style.opacity = '1';
+      }, 200);
+
       document.getElementById('archTitle').innerText = data.title;
       document.getElementById('metric1').innerText = data.m1;
       document.getElementById('lbl1').innerText = data.l1;
