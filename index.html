@@ -4,628 +4,336 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Christo Eldhose — Scrum Master & Agile Leader</title>
-  <!-- Three.js for Interactive 3D WebGL Model -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
-      --bg-cream: #f5f2eb;
-      --bg-card: #ffffff;
-      --text-main: #111111;
-      --text-muted: #666666;
-      --accent-lime: #ccff00;
-      --accent-dark: #111111;
-      --border-color: #e2ded4;
-      --card-shadow: rgba(0, 0, 0, 0.04);
+      --bg: #0d0d0d;
+      --panel: #161616;
+      --panel-border: #262626;
+      --text: #ffffff;
+      --text-muted: #8e8e93;
+      --accent: #ccff00;
+      --accent-dim: rgba(204, 255, 0, 0.12);
+      --font-serif: Georgia, 'Times New Roman', Times, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text); font-family: var(--font-sans); line-height: 1.5; overflow-x: hidden; }
 
-    body {
-      background-color: var(--bg-cream);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-
-    /* Ambient Cursor Spotlight */
-    .spotlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      background: radial-gradient(circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(204, 255, 0, 0.2), transparent 80%);
-      z-index: 1;
-    }
-
-    /* Navigation */
+    /* Sticky Navigation */
     nav {
-      position: sticky;
-      top: 0;
-      background: rgba(245, 242, 235, 0.85);
-      backdrop-filter: blur(12px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 3rem;
-      border-bottom: 1px solid var(--border-color);
-      z-index: 10;
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 3rem; background: rgba(13, 13, 13, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--panel-border);
     }
-
-    .brand {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      text-transform: uppercase;
+    .brand { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; text-transform: uppercase; }
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-right a { color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .contact-btn {
+      background: var(--text); color: var(--bg); padding: 0.6rem 1.4rem; border-radius: 50px;
+      text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: background 0.2s;
     }
+    .contact-btn:hover { background: var(--accent); color: var(--bg); }
 
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .nav-links a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    .audio-btn {
-      background: var(--text-main);
-      color: #fff;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .audio-btn:hover {
-      background: var(--accent-lime);
-      color: var(--text-main);
-    }
-
-    /* Hero Layout with 3D Object */
+    /* Hero Section */
     .hero {
-      position: relative;
-      z-index: 2;
-      padding: 4rem 3rem 2rem;
-      max-width: 1300px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 2rem;
-      align-items: center;
-      min-height: 80vh;
+      max-width: 1300px; margin: 0 auto; padding: 6rem 3rem 4rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
     }
-
-    .tagline {
-      display: inline-block;
-      background: #e8e3d5;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .badge {
+      display: inline-block; padding: 0.4rem 1rem; border-radius: 20px;
+      background: var(--panel); border: 1px solid var(--panel-border);
+      color: var(--accent); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin-bottom: 1.5rem;
     }
+    h1 { font-family: var(--font-serif); font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 400; line-height: 1.08; margin-bottom: 1.5rem; }
+    .hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 520px; }
 
-    h1 {
-      font-family: Georgia, serif;
-      font-size: clamp(2.8rem, 5.5vw, 4.8rem);
-      line-height: 1.08;
-      font-weight: 400;
-      letter-spacing: -0.03em;
-      margin-bottom: 2rem;
+    /* Cursor Follow Preview Cards (Mouse Hover Preview) */
+    .hover-preview-zone {
+      position: relative; background: var(--panel); border: 1px solid var(--panel-border);
+      border-radius: 24px; padding: 3rem; min-height: 380px; display: flex; flex-direction: column; justify-content: center;
     }
-
-    .hero-bio {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-      max-width: 600px;
+    .hover-preview-zone h3 { font-family: var(--font-serif); font-size: 2rem; margin-bottom: 1rem; }
+    .hover-preview-zone p { color: var(--text-muted); font-size: 1rem; }
+    
+    .floating-cursor-card {
+      position: fixed; pointer-events: none; z-index: 999; width: 280px; background: #222;
+      border: 1px solid var(--accent); border-radius: 16px; padding: 1.25rem; opacity: 0;
+      transform: translate(-50%, -100%) scale(0.9); transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
+    .floating-cursor-card.active { opacity: 1; transform: translate(-50%, -120%) scale(1); }
+    .card-tag { font-size: 0.75rem; color: var(--accent); font-weight: 700; text-transform: uppercase; }
 
-    .cta-btn {
-      background: var(--accent-dark);
-      color: #fff;
-      text-decoration: none;
-      padding: 1.1rem 2.2rem;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.2s ease, background 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
+    /* Abstract Architectural Dynamic Image Swap */
+    .arch-section { max-width: 1300px; margin: 0 auto; padding: 6rem 3rem; }
+    .section-header { margin-bottom: 3rem; }
+    .section-header h2 { font-family: var(--font-serif); font-size: 2.8rem; font-weight: 400; margin-bottom: 0.5rem; }
+    .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+    .arch-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: center; }
+    .arch-nav { display: flex; flex-direction: column; gap: 1rem; }
+    .arch-step {
+      background: var(--panel); border: 1px solid var(--panel-border); border-radius: 16px; padding: 1.5rem;
+      cursor: pointer; transition: all 0.25s ease;
     }
+    .arch-step.active, .arch-step:hover { border-color: var(--accent); background: #1f1f1f; }
+    .step-num { font-size: 0.85rem; color: var(--accent); font-weight: 700; margin-bottom: 0.25rem; }
+    .step-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .step-desc { font-size: 0.95rem; color: var(--text-muted); }
 
-    .cta-btn:hover {
-      background: var(--accent-lime);
-      color: var(--text-main);
-      transform: translateY(-2px);
+    .arch-canvas-display {
+      background: var(--panel); border: 1px solid var(--panel-border); border-radius: 24px; padding: 3rem;
+      min-height: 420px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
     }
-
-    /* 3D WebGL Canvas Container */
-    .canvas-container {
-      position: relative;
-      width: 100%;
-      height: 480px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .display-diagram {
+      width: 100%; height: 220px; border-radius: 16px; background-size: cover; background-position: center;
+      transition: background-image 0.4s ease, transform 0.4s ease; border: 1px solid var(--panel-border);
     }
+    .display-metrics { display: flex; gap: 2rem; margin-top: 1.5rem; }
+    .metric-item { flex: 1; }
+    .metric-val { font-family: var(--font-serif); font-size: 2rem; color: var(--text); }
+    .metric-lbl { font-size: 0.85rem; color: var(--text-muted); }
 
-    #webgl-canvas {
-      width: 100%;
-      height: 100%;
-      cursor: grab;
+    /* Infinite Marquee Portfolio Ticker */
+    .marquee-section { padding: 4rem 0; border-top: 1px solid var(--panel-border); border-bottom: 1px solid var(--panel-border); overflow: hidden; white-space: nowrap; }
+    .marquee-track { display: inline-flex; gap: 2rem; animation: marquee 25s linear infinite; }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 0.8rem; background: var(--panel);
+      border: 1px solid var(--panel-border); padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem;
     }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-    #webgl-canvas:active {
-      cursor: grabbing;
+    /* Showcase Portfolio Grid */
+    .showcase-section { max-width: 1300px; margin: 0 auto; padding: 6rem 3rem; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+    .portfolio-card {
+      background: var(--panel); border: 1px solid var(--panel-border); border-radius: 20px; padding: 2.5rem;
+      transition: border-color 0.3s, transform 0.3s; position: relative;
     }
+    .portfolio-card:hover { border-color: var(--accent); transform: translateY(-6px); }
+    .portfolio-card h3 { font-family: var(--font-serif); font-size: 1.8rem; margin: 1rem 0 0.5rem; }
+    .portfolio-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .portfolio-link { color: var(--accent); font-weight: 600; text-decoration: none; font-size: 0.9rem; }
 
-    /* Metrics Grid */
-    .metrics-section {
-      position: relative;
-      z-index: 2;
-      padding: 3rem 3rem;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .metric-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px var(--card-shadow);
-      transition: transform 0.2s ease;
-    }
-
-    .metric-card:hover {
-      transform: translateY(-4px);
-    }
-
-    .metric-num {
-      font-family: Georgia, serif;
-      font-size: 3.5rem;
-      font-weight: 400;
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    .metric-label {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Projects Section */
-    .projects-section {
-      position: relative;
-      z-index: 2;
-      padding: 4rem 3rem;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-family: Georgia, serif;
-      font-size: 2.5rem;
-      margin-bottom: 2.5rem;
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 2rem;
-    }
-
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 2.5rem;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .project-card:hover {
-      border-color: var(--text-main);
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .project-tag {
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-
-    .project-card h3 {
-      font-family: Georgia, serif;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      line-height: 1.2;
-    }
-
-    .project-card p {
-      color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-
-    .project-link {
-      font-weight: 600;
-      font-size: 0.95rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* Modal Overlay */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(17, 17, 17, 0.6);
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    .modal-card {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 3rem;
-      max-width: 700px;
-      width: 100%;
-      max-height: 85vh;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: #f0ece1;
-      border: none;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    /* Footer */
     footer {
-      position: relative;
-      z-index: 2;
-      border-top: 1px solid var(--border-color);
-      padding: 4rem 3rem;
-      max-width: 1300px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 2rem;
+      border-top: 1px solid var(--panel-border); max-width: 1300px; margin: 0 auto; padding: 4rem 3rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;
     }
+    footer h2 { font-family: var(--font-serif); font-size: 2rem; }
+    footer p { color: var(--text-muted); }
 
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .canvas-container { height: 350px; }
+      .hero, .arch-grid { grid-template-columns: 1fr; }
+      nav, .hero, .arch-section, .showcase-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="spotlight" id="spotlight"></div>
+  <!-- Floating Cursor-Following Preview Object -->
+  <div class="floating-cursor-card" id="cursorCard">
+    <div class="card-tag" id="cursorTag">Agile Solution</div>
+    <div id="cursorTitle" style="font-weight:700; font-size:1.1rem; margin:0.4rem 0;">Preview Title</div>
+    <div id="cursorDesc" style="font-size:0.85rem; color:#aaa;">Interactive description preview.</div>
+  </div>
 
   <nav>
     <div class="brand">Christo Eldhose</div>
-    <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#metrics">Metrics</a>
-      <button class="audio-btn" id="audioToggle">Sound: ON 🔊</button>
+    <div class="nav-right">
+      <a href="#solutions">Solutions</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#showcase">Portfolio</a>
+      <a href="mailto:christo.eldhose@example.com" class="contact-btn">Get In Touch</a>
     </div>
   </nav>
 
   <section class="hero">
     <div>
-      <div class="tagline">Scrum Master • Agile Execution • Operations Leader</div>
-      <h1>Creating seamless team velocity and predictable outcomes.</h1>
-      <p class="hero-bio">
-        Kochi & Bengaluru based Scrum Master with experience guiding cross-functional software and operations teams through Agile ceremonies, blocker resolution, and enterprise ERP implementations.
-      </p>
-      <a href="mailto:christo.eldhose@example.com" class="cta-btn">Connect With Me ↗</a>
+      <div class="badge">Scrum Master • Agile Leader • Project Coordinator</div>
+      <h1>Driving seamless team velocity and predictable outcomes.</h1>
+      <p>Kochi & Bengaluru based Agile Leader with hands-on experience guiding cross-functional engineering teams, optimizing Jira workflows, and facilitating enterprise ERP implementations.</p>
     </div>
 
-    <!-- 3D Interactive WebGL Geometric Model -->
-    <div class="canvas-container">
-      <canvas id="webgl-canvas"></canvas>
-    </div>
-  </section>
-
-  <section class="metrics-section" id="metrics">
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-num">35%</div>
-        <div class="metric-label">Sprint Velocity Increase Across Agile Engineering Teams</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num">92%</div>
-        <div class="metric-label">On-Time Sprint Goal Completion Predictability</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num">10+</div>
-        <div class="metric-label">Enterprise ERP Client Implementations Managed</div>
-      </div>
+    <!-- Mouse Drag / Hover Interactive Preview Box -->
+    <div class="hover-preview-zone" id="hoverZone"
+         data-tag="Agile Operations" 
+         data-title="Sprint Velocity & Flow" 
+         data-desc="Hover across this block to see real-time cursor-tracking Agile artifact previews.">
+      <div class="badge" style="width: fit-content;">Interactive Cursor Zone</div>
+      <h3>Hover your cursor over this card</h3>
+      <p>Move your mouse inside to test the live floating preview object that follows your movement across the screen.</p>
     </div>
   </section>
 
-  <section class="projects-section" id="work">
-    <h2 class="section-title">Featured Agile Case Studies</h2>
-    <div class="projects-grid">
-      <div class="project-card" onclick="openModal('retro')">
-        <div class="project-tag">Agile Facilitation</div>
-        <h3>Agile Retrospective & Flow Optimization Playbook</h3>
-        <p>Facilitated high-engagement retrospective formats (4Ls, Sailboat) that increased action-item completion from 40% to 90%.</p>
-        <span class="project-link">View Artifact Playbook ↗</span>
+  <!-- Abstract Architectural Design (Dynamic Image & Metric Swap) -->
+  <section class="arch-section" id="architecture">
+    <div class="section-header">
+      <h2>Agile Architecture & Workflow Systems</h2>
+      <p>Click any step to dynamically swap the architectural diagrams, execution models, and live metrics.</p>
+    </div>
+
+    <div class="arch-grid">
+      <div class="arch-nav">
+        <div class="arch-step active" onclick="swapArch(0)">
+          <div class="step-num">01 / CEREMONIES</div>
+          <div class="step-title">Agile Retrospective Framework</div>
+          <div class="step-desc">Facilitated 4Ls and Sailboat retrospective formats to drive team action items.</div>
+        </div>
+
+        <div class="arch-step" onclick="swapArch(1)">
+          <div class="step-num">02 / TOOLING</div>
+          <div class="step-title">Jira & Confluence Architecture</div>
+          <div class="step-desc">Restructured issue types, custom workflows, and release health dashboards.</div>
+        </div>
+
+        <div class="arch-step" onclick="swapArch(2)">
+          <div class="step-num">03 / OPERATIONS</div>
+          <div class="step-title">Enterprise ERP Client Adoption</div>
+          <div class="step-desc">Owned end-user training, blocker escalation, and client success management.</div>
+        </div>
       </div>
 
-      <div class="project-card" onclick="openModal('jira')">
-        <div class="project-tag">Tooling & Governance</div>
-        <h3>Jira & Confluence Architecture Modernization</h3>
-        <p>Restructured backlog workflows, automated sprint reporting, and reduced defect triage turnaround by 30%.</p>
-        <span class="project-link">View Workflow Architecture ↗</span>
-      </div>
-
-      <div class="project-card" onclick="openModal('erp')">
-        <div class="project-tag">Operations & Client Success</div>
-        <h3>Enterprise ERP Software Adoption Framework</h3>
-        <p>Owned client onboarding, cross-functional issue troubleshooting, and end-user training for enterprise software clients.</p>
-        <span class="project-link">View Operations Strategy ↗</span>
+      <div class="arch-canvas-display">
+        <div class="display-diagram" id="archDiagram" style="background-image: linear-gradient(135deg, #1f2937, #111827);"></div>
+        <div id="archTitle" style="font-family: var(--font-serif); font-size: 1.6rem; margin-top: 1.5rem;">Agile Retrospective Framework</div>
+        <div class="display-metrics">
+          <div class="metric-item">
+            <div class="metric-val" id="metric1">90%</div>
+            <div class="metric-lbl" id="lbl1">Action Item Completion Rate</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val" id="metric2">+35%</div>
+            <div class="metric-lbl" id="lbl2">Sprint Velocity Growth</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">×</button>
-      <div id="modalContent"></div>
+  <!-- Infinite Marquee Scroll (Build Your Own AI / Tools) -->
+  <section class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-item">⚡ Jira Software</div>
+      <div class="marquee-item">📘 Confluence Hubs</div>
+      <div class="marquee-item">🔄 Scrum Ceremonies</div>
+      <div class="marquee-item">📊 Sprint Velocity</div>
+      <div class="marquee-item">📈 Burndown Analytics</div>
+      <div class="marquee-item">💻 Enterprise ERP</div>
+      <div class="marquee-item">🚀 Agile Flow Optimization</div>
+      <!-- Duplicated for Infinite Loop -->
+      <div class="marquee-item">⚡ Jira Software</div>
+      <div class="marquee-item">📘 Confluence Hubs</div>
+      <div class="marquee-item">🔄 Scrum Ceremonies</div>
+      <div class="marquee-item">📊 Sprint Velocity</div>
+      <div class="marquee-item">📈 Burndown Analytics</div>
+      <div class="marquee-item">💻 Enterprise ERP</div>
+      <div class="marquee-item">🚀 Agile Flow Optimization</div>
     </div>
-  </div>
+  </section>
+
+  <!-- Showcase Portfolio Examples -->
+  <section class="showcase-section" id="showcase">
+    <div class="section-header">
+      <h2>Showcase & Case Studies</h2>
+      <p>Explore detailed project achievements, roles, and organizational impacts.</p>
+    </div>
+
+    <div class="portfolio-grid">
+      <div class="portfolio-card">
+        <div class="badge">Nissi Computing Labs</div>
+        <h3>Project Coordinator & ERP Lead</h3>
+        <p>Managed client software deployments, coordinated cross-functional issue resolution, and streamlined end-user training.</p>
+        <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+      </div>
+
+      <div class="portfolio-card">
+        <div class="badge">STAR Innovators</div>
+        <h3>Agile Facilitator & Scrum Master</h3>
+        <p>Led daily standups, backlog grooming, sprint planning, and retrospective sessions for software development teams.</p>
+        <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+      </div>
+
+      <div class="portfolio-card">
+        <div class="badge">IEDC MBITS</div>
+        <h3>Innovation & Project Lead</h3>
+        <p>Coordinated tech innovation initiatives, student developer workshops, and project milestones.</p>
+        <a href="mailto:christo.eldhose@example.com" class="portfolio-link">Inquire Case Study ↗</a>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <div>
-      <h2 style="font-family: Georgia, serif;">Let's build high-performing teams together.</h2>
+      <h2>Christo Eldhose</h2>
+      <p>Scrum Master • Agile Leader • Operations Specialist</p>
     </div>
     <div>
-      <p style="color: var(--text-muted);">© 2026 Christo Eldhose • Kochi, Kerala, India</p>
+      <p>© 2026 Christo Eldhose • Kochi, Kerala, India</p>
     </div>
   </footer>
 
   <script>
-    // -------------------------------------------------------------
-    // THREE.JS 3D INTERACTIVE HERO OBJECT (GLASS/METALLIC KNOT)
-    // -------------------------------------------------------------
-    const canvas = document.getElementById('webgl-canvas');
-    const container = canvas.parentElement;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-    camera.position.z = 6;
-
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    // Torus Knot Geometry
-    const geometry = new THREE.TorusKnotGeometry(1.2, 0.38, 128, 32);
-    
-    // Wireframe Outer Mesh
-    const wireframeGeometry = new THREE.WireframeGeometry(geometry);
-    const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x111111, opacity: 0.15, transparent: true });
-    const wireframeMesh = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
-
-    // Shiny Metallic Metallic Inner Mesh
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xccff00,
-      emissive: 0x111111,
-      specular: 0xffffff,
-      shininess: 100,
-      flatShading: false
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.add(wireframeMesh);
-    scene.add(mesh);
-
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xccff00, 1.5);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(-5, 5, 2);
-    scene.add(dirLight);
-
-    // Mouse Drag Physics
-    let isDragging = false;
-    let previousMousePosition = { x: 0, y: 0 };
-    let mouseVelocity = { x: 0.005, y: 0.005 };
-
-    canvas.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      playSynthSound('hover');
-    });
-
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
+    // 1. Cursor Follow Preview Object Implementation
+    const cursorCard = document.getElementById('cursorCard');
+    const cursorTag = document.getElementById('cursorTag');
+    const cursorTitle = document.getElementById('cursorTitle');
+    const cursorDesc = document.getElementById('cursorDesc');
+    const hoverZone = document.getElementById('hoverZone');
 
     document.addEventListener('mousemove', (e) => {
-      const deltaX = e.clientX - previousMousePosition.x;
-      const deltaY = e.clientY - previousMousePosition.y;
+      cursorCard.style.left = `${e.clientX}px`;
+      cursorCard.style.top = `${e.clientY}px`;
+    });
 
-      if (isDragging) {
-        mesh.rotation.y += deltaX * 0.01;
-        mesh.rotation.x += deltaY * 0.01;
-        mouseVelocity = { x: deltaY * 0.001, y: deltaX * 0.001 };
+    hoverZone.addEventListener('mouseenter', () => {
+      cursorTag.innerText = hoverZone.getAttribute('data-tag');
+      cursorTitle.innerText = hoverZone.getAttribute('data-title');
+      cursorDesc.innerText = hoverZone.getAttribute('data-desc');
+      cursorCard.classList.add('active');
+    });
+
+    hoverZone.addEventListener('mouseleave', () => {
+      cursorCard.classList.remove('active');
+    });
+
+    // 2. Abstract Architectural Dynamic Image & Metric Swap Engine
+    const archData = [
+      {
+        title: "Agile Retrospective Framework",
+        bg: "linear-gradient(135deg, #1e3a8a, #0f172a)",
+        m1: "90%", l1: "Action Completion Rate",
+        m2: "+35%", l2: "Sprint Velocity Growth"
+      },
+      {
+        title: "Jira & Confluence Architecture",
+        bg: "linear-gradient(135deg, #065f46, #064e3b)",
+        m1: "-30%", l1: "Defect Triage Turnaround",
+        m2: "100%", l2: "Backlog Transparency"
+      },
+      {
+        title: "Enterprise ERP Client Adoption",
+        bg: "linear-gradient(135deg, #7c2d12, #451a03)",
+        m1: "10+", l1: "Enterprise Clients Onboarded",
+        m2: "98%", l2: "Client Satisfaction Score"
       }
+    ];
 
-      previousMousePosition = { x: e.clientX, y: e.clientY };
-    });
+    function swapArch(index) {
+      const steps = document.querySelectorAll('.arch-step');
+      steps.forEach((s, i) => {
+        if(i === index) s.classList.add('active');
+        else s.classList.remove('active');
+      });
 
-    // Animation Loop
-    function animate() {
-      requestAnimationFrame(animate);
-
-      if (!isDragging) {
-        mesh.rotation.x += mouseVelocity.x + 0.003;
-        mesh.rotation.y += mouseVelocity.y + 0.005;
-        // Smooth deceleration
-        mouseVelocity.x *= 0.98;
-        mouseVelocity.y *= 0.98;
-      }
-
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    });
-
-    // -------------------------------------------------------------
-    // WEB AUDIO SYNTHESIZER
-    // -------------------------------------------------------------
-    let soundEnabled = true;
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    document.getElementById('audioToggle').addEventListener('click', () => {
-      soundEnabled = !soundEnabled;
-      document.getElementById('audioToggle').innerText = soundEnabled ? 'Sound: ON 🔊' : 'Sound: OFF 🔇';
-    });
-
-    function playSynthSound(type) {
-      if (!soundEnabled) return;
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      const now = audioCtx.currentTime;
-
-      if (type === 'hover') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(260, now);
-        osc.frequency.exponentialRampToValueAtTime(520, now + 0.04);
-        gain.gain.setValueAtTime(0.04, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-        osc.start(now);
-        osc.stop(now + 0.04);
-      } else if (type === 'powerup') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(300, now);
-        osc.frequency.exponentialRampToValueAtTime(900, now + 0.25);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        osc.start(now);
-        osc.stop(now + 0.25);
-      }
-    }
-
-    // Spotlight cursor tracking
-    const spotlight = document.getElementById('spotlight');
-    document.addEventListener('mousemove', (e) => {
-      spotlight.style.setProperty('--mouse-x', `${e.clientX}px`);
-      spotlight.style.setProperty('--mouse-y', `${e.clientY}px`);
-    });
-
-    // Sound triggers
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('mouseenter', () => playSynthSound('hover'));
-    });
-
-    // Modal Details
-    const modalData = {
-      retro: `
-        <h2 style="font-family: Georgia, serif; font-size: 2rem; margin-bottom: 1rem;">Agile Retrospective Playbook</h2>
-        <p style="color:#555; margin-bottom: 1rem;"><strong>Overview:</strong> Transformed standard retrospective meetings into interactive continuous-improvement workshops.</p>
-        <ul style="margin-left:1.5rem; color:#555; line-height: 1.8;">
-          <li>Introduced dynamic themes (Sailboat, Starfish, 4Ls) based on team sentiment.</li>
-          <li>Established actionable retro items with designated owners in Jira.</li>
-          <li>Increased action completion rate from 40% to 90% over 4 sprints.</li>
-        </ul>
-      `,
-      jira: `
-        <h2 style="font-family: Georgia, serif; font-size: 2rem; margin-bottom: 1rem;">Jira & Confluence Architecture</h2>
-        <p style="color:#555; margin-bottom: 1rem;"><strong>Overview:</strong> Re-architected Jira issue types, custom workflows, and release dashboards for cross-functional transparency.</p>
-        <ul style="margin-left:1.5rem; color:#555; line-height: 1.8;">
-          <li>Configured automated sprint health reporting and blocker escalation paths.</li>
-          <li>Built central Confluence knowledge hubs for onboarding new team members.</li>
-          <li>Reduced triage turnaround time by 30%.</li>
-        </ul>
-      `,
-      erp: `
-        <h2 style="font-family: Georgia, serif; font-size: 2rem; margin-bottom: 1rem;">ERP Client Adoption Framework</h2>
-        <p style="color:#555; margin-bottom: 1rem;"><strong>Overview:</strong> Owned end-to-end client success, requirement gathering, and operations support for Nissi Computing Labs.</p>
-        <ul style="margin-left:1.5rem; color:#555; line-height: 1.8;">
-          <li>Led on-site training workshops across enterprise client teams.</li>
-          <li>Diagnosed root-cause workflow errors and resolved system blockers in real time.</li>
-          <li>Sustained high client retention and adoption rates.</li>
-        </ul>
-      `
-    };
-
-    function openModal(type) {
-      playSynthSound('powerup');
-      document.getElementById('modalContent').innerHTML = modalData[type];
-      document.getElementById('modalOverlay').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').style.display = 'none';
+      const data = archData[index];
+      document.getElementById('archDiagram').style.backgroundImage = data.bg;
+      document.getElementById('archTitle').innerText = data.title;
+      document.getElementById('metric1').innerText = data.m1;
+      document.getElementById('lbl1').innerText = data.l1;
+      document.getElementById('metric2').innerText = data.m2;
+      document.getElementById('lbl2').innerText = data.l2;
     }
   </script>
 </body>
